@@ -1,4 +1,5 @@
 [toolchain]
 channel = "nightly-2024-10-22"
 profile = "default"
-components = ["rust-analyzer", "clippy"]
+components = ["rust-analyzer", "clippy", "llvm-tools-preview", "rust-src"]
+targets = ["aarch64-unknown-none-softfloat"]

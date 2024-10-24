@@ -3,5 +3,16 @@
 version = 4
 
 [[package]]
+name = "aarch64"
+version = "0.1.0"
+
+[[package]]
 name = "kernel"
+version = "0.1.0"
+dependencies = [
+ "aarch64",
+]
+
+[[package]]
+name = "rpi3"
 version = "0.1.0"

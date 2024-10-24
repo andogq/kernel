@@ -1,10 +1,7 @@
 #![no_std]
 #![no_main]
 
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
-    loop {}
-}
+pub use aarch64::_start;
 
 #[cfg(not(test))]
 #[panic_handler]

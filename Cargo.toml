@@ -10,3 +10,7 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
+aarch64.path = "arch/aarch64"
+
+[workspace]
+members = ["arch/aarch64", "bsp/rpi3"]
