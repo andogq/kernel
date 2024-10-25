@@ -23,6 +23,7 @@
     ADR_REL x0,     __bss_start
     ADR_REL x1,     __bss_end_exclusive
 
+// Constantly loop to clear out BSS memory
 1:
     // If the pointers meet each other, then BSS has been cleared.
     cmp     x0,     x1
@@ -32,11 +33,12 @@
     stp     xzr, xzr, [x0], #16
     b 1b
 
-2: // Success loop
-    nop
-    wfe
-    nop
-    b 2b
+2: // BSS complete, prepare for Rust
+    // Set up the stack pointer
+    ADR_REL x0, __boot_core_stack_end_exclusive
+    mov     sp, x0
+
+    b       _start_rust
 
 9:                  // <- Loop
     wfe

@@ -1,6 +1,8 @@
 #![no_std]
 #![no_main]
 
+use core::arch::asm;
+
 use rpi3::Arch;
 
 /// Instance of the architecture running the kernel.
@@ -13,6 +15,13 @@ static ARCH: Arch = Arch::new();
 /// to add the attribute here.
 #[allow(non_upper_case_globals)]
 pub static _start: unsafe extern "C" fn() -> ! = Arch::_start;
+
+#[no_mangle]
+pub unsafe extern "C" fn _start_rust() {
+    loop {
+        asm!("nop")
+    }
+}
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
