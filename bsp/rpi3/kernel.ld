@@ -20,4 +20,12 @@ SECTIONS
         KEEP(*(.text._start))
         *(.text*)
     } :segment_code
+
+    .bss (NOLOAD) : ALIGN(16)
+    {
+        __bss_start = .;
+        *(.bss*);
+        . = ALIGN(16);
+        __bss_end_exclusive = .;
+    }
 }
