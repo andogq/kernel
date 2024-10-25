@@ -1,19 +1,18 @@
 #![no_std]
 #![no_main]
 
-// pub use aarch64::_start;
+use rpi3::Arch;
 
-pub use aarch64::*;
+/// Instance of the architecture running the kernel.
+#[allow(dead_code)]
+static ARCH: Arch = Arch::new();
 
-struct MyInfo;
-impl Info for MyInfo {
-    const BOOT_CORE_ID: usize = 0;
-}
-
-static ARCH: S<MyInfo> = S::new();
-
+/// Re-export the `_start` symbol in order for the linker to pick it up.
+///
+/// **Note:** The implementation of `_start` *must* specify `#[no_mangle]`, as it is not possible
+/// to add the attribute here.
 #[allow(non_upper_case_globals)]
-pub static _start: unsafe extern "C" fn() -> ! = S::<MyInfo>::_start;
+pub static _start: unsafe extern "C" fn() -> ! = Arch::_start;
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {

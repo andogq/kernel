@@ -3,13 +3,6 @@ name = "kernel"
 version = "0.1.0"
 edition = "2021"
 
-# [[bin]]
-# name = "kernel"
-# path = "src/main.rs"
-# test = false
-# doctest = false
-# bench = false
-
 [profile.dev]
 panic = "abort"
 
@@ -17,7 +10,12 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-aarch64.path = "arch/aarch64"
+aarch64.workspace = true
+rpi3.workspace = true
 
 [workspace]
 members = ["arch/aarch64", "bsp/rpi3"]
+
+[workspace.dependencies]
+aarch64.path = "arch/aarch64"
+rpi3.path = "bsp/rpi3"

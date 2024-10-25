@@ -11,8 +11,12 @@ name = "kernel"
 version = "0.1.0"
 dependencies = [
  "aarch64",
+ "rpi3",
 ]
 
 [[package]]
 name = "rpi3"
 version = "0.1.0"
+dependencies = [
+ "aarch64",
+]
