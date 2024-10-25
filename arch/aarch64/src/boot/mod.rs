@@ -1,4 +1,4 @@
-use core::arch::naked_asm;
+use core::arch::{asm, naked_asm};
 
 use crate::{Aarch64, Aarch64Config};
 
@@ -22,5 +22,19 @@ impl<Config: Aarch64Config> Aarch64<Config> {
             CONST_CORE_ID_MASK = const 0b11,
             CONST_BOOT_CORE_ID = const Self::BOOT_CORE_ID,
         )
+    }
+
+    /// Entry point for Rust.
+    ///
+    /// # Safety
+    ///
+    /// Requires memory, including the stack, to be correctly configured.
+    #[no_mangle]
+    pub unsafe extern "C" fn _start_rust() -> ! {
+        loop {
+            asm!("nop");
+            asm!("nop");
+            asm!("nop");
+        }
     }
 }
