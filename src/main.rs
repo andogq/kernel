@@ -14,9 +14,6 @@ impl Rpi3Config for Config {
 /// Type of the BSP used in this compilation.
 type Bsp = Rpi3<Config>;
 
-/// Instance of the BSP.
-static BSP: Bsp = Bsp::new();
-
 /// Re-export the `_start` symbol in order for the linker to pick it up.
 ///
 /// **Note:** The implementation of `_start` *must* specify `#[no_mangle]`, as it is not possible

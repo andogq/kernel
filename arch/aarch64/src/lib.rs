@@ -12,6 +12,7 @@ pub trait Aarch64Config {
     /// ID of the boot core.
     const BOOT_CORE_ID: usize;
 
+    /// Entry point for the kernel to be called once the device has booted.
     const KERNEL_MAIN: fn() -> !;
 }
 
@@ -21,15 +22,6 @@ pub trait Aarch64Config {
 /// provide a typed (such as the config) namespace for everything to be contained within.
 pub struct Aarch64<Config> {
     _config: PhantomData<Config>,
-}
-
-impl<C> Aarch64<C> {
-    /// Create a new instance of the architecture with a specific config.
-    pub const fn new<Config: Aarch64Config>() -> Aarch64<Config> {
-        Aarch64 {
-            _config: PhantomData,
-        }
-    }
 }
 
 impl<C: Aarch64Config> Arch for Aarch64<C> {
