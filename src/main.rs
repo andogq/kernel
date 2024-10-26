@@ -1,25 +1,39 @@
 #![no_std]
 #![no_main]
+#![feature(inherent_associated_types)]
 
-use rpi3::Arch;
+use rpi3::{Rpi3, Rpi3Config};
 
-/// Instance of the architecture running the kernel.
-#[allow(dead_code)]
-pub static ARCH: Arch = Arch::new();
+/// Configuration object so that a pointer to `kernel_main` can be passed as a type parameter to
+/// the BSP.
+struct Config;
+impl Rpi3Config for Config {
+    const KERNEL_MAIN: fn() -> ! = kernel_main;
+}
+
+/// Type of the BSP used in this compilation.
+type Bsp = Rpi3<Config>;
+
+/// Instance of the BSP.
+static BSP: Bsp = Bsp::new();
 
 /// Re-export the `_start` symbol in order for the linker to pick it up.
 ///
 /// **Note:** The implementation of `_start` *must* specify `#[no_mangle]`, as it is not possible
 /// to add the attribute here.
 #[allow(non_upper_case_globals)]
-pub static _start: unsafe extern "C" fn() -> ! = Arch::_start;
+pub static _start: unsafe extern "C" fn() -> ! = Bsp::Arch::_start;
 
 /// Re-export the `_start_rust` symbol in order for the linker to pick it up.
 ///
 /// **Note:** The implementation of `_start_rust` *must* specify `#[no_mangle]`, as it is not
 /// possible to add the attribute here.
 #[allow(non_upper_case_globals)]
-pub static _start_rust: unsafe extern "C" fn() -> ! = Arch::_start_rust;
+pub static _start_rust: unsafe extern "C" fn() -> ! = Bsp::Arch::_start_rust;
+
+pub fn kernel_main() -> ! {
+    loop {}
+}
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {

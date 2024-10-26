@@ -1,4 +1,6 @@
-use core::arch::{asm, naked_asm};
+use core::arch::naked_asm;
+
+use aarch64_cpu::{asm, registers::*};
 
 use crate::{Aarch64, Aarch64Config};
 
@@ -31,10 +33,39 @@ impl<Config: Aarch64Config> Aarch64<Config> {
     /// Requires memory, including the stack, to be correctly configured.
     #[no_mangle]
     pub unsafe extern "C" fn _start_rust() -> ! {
-        loop {
-            asm!("nop");
-            asm!("nop");
-            asm!("nop");
-        }
+        // D19-6632: Configure hypervisor controller to enable aarch64 in EL1
+        HCR_EL2.write(HCR_EL2::RW::EL1IsAarch64);
+
+        // Set up timer access for EL1
+        Self::enable_el1_timers();
+
+        // C5-800: Fake an exception return to enter EL1
+        SPSR_EL2.write(
+            SPSR_EL2::D::Masked
+                + SPSR_EL2::A::Masked
+                + SPSR_EL2::I::Masked
+                + SPSR_EL2::F::Masked
+                + SPSR_EL2::M::EL1h,
+        );
+
+        // Set the link address to return from the exception
+        ELR_EL2.set(Config::KERNEL_MAIN as *const () as u64);
+
+        // Perform the exception return
+        asm::eret()
+    }
+
+    /// Configure access to timers and counters in EL1.
+    ///
+    /// # Safety:
+    ///
+    /// Caller must ensure that processor is already in EL2, otherwise timer configurations cannot
+    /// be changed.
+    unsafe fn enable_el1_timers() {
+        // D19-7863: Disable traps for accessing EL1 counter and timer.
+        CNTHCTL_EL2.write(CNTHCTL_EL2::EL1PCEN::SET + CNTHCTL_EL2::EL1PCTEN::SET);
+
+        // D19-7960: Clear timer offsets for the virtual timer.
+        CNTVOFF_EL2.set(0);
     }
 }

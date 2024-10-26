@@ -9,6 +9,8 @@ use core::marker::PhantomData;
 pub trait Aarch64Config {
     /// ID of the boot core.
     const BOOT_CORE_ID: usize;
+
+    const KERNEL_MAIN: fn() -> !;
 }
 
 /// Core structure to contain all state of this architecture.
