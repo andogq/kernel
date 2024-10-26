@@ -25,6 +25,5 @@ pub struct Aarch64<Config> {
 }
 
 impl<C: Aarch64Config> Arch for Aarch64<C> {
-    const START: unsafe extern "C" fn() -> ! = Self::_start;
-    const START_RUST: unsafe extern "C" fn() -> ! = Self::_start_rust;
+    const LINKER_FUNCTIONS: &[unsafe extern "C" fn() -> !] = &[Self::_start, Self::_start_rust];
 }

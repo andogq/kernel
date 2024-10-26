@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 
-use lib_kernel::{Arch as _, Bsp as BspTrait};
+use lib_kernel::{Arch as _, Bsp as BspTrait, RawFunction};
 use rpi3::{Rpi3, Rpi3Config};
 
 /// Configuration object so that a pointer to `kernel_main` can be passed as a type parameter to
@@ -14,19 +14,7 @@ impl Rpi3Config for Config {
 /// Type of the BSP used in this compilation.
 type Bsp = Rpi3<Config>;
 
-/// Re-export the `_start` symbol in order for the linker to pick it up.
-///
-/// **Note:** The implementation of `_start` *must* specify `#[no_mangle]`, as it is not possible
-/// to add the attribute here.
-#[allow(non_upper_case_globals)]
-pub static _start: unsafe extern "C" fn() -> ! = <Bsp as BspTrait>::Arch::START;
-
-/// Re-export the `_start_rust` symbol in order for the linker to pick it up.
-///
-/// **Note:** The implementation of `_start_rust` *must* specify `#[no_mangle]`, as it is not
-/// possible to add the attribute here.
-#[allow(non_upper_case_globals)]
-pub static _start_rust: unsafe extern "C" fn() -> ! = <Bsp as BspTrait>::Arch::START_RUST;
+pub static LINKER_FUNCTIONS: &[RawFunction] = <Bsp as BspTrait>::Arch::LINKER_FUNCTIONS;
 
 pub fn kernel_main() -> ! {
     loop {}
