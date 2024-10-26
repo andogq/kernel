@@ -17,6 +17,9 @@ PHDRS
 
     /* Set R/X permissions for the `segment_code` section */
     segment_code PT_LOAD FLAGS(5);
+
+    /* Set R/W permissions for the `segment_data` section */
+    segment_data PT_LOAD FLAGS(6);
 }
 
 SECTIONS
@@ -41,8 +44,6 @@ SECTIONS
 
     ASSERT((. & PAGE_MASK) == 0, "End of boot core stack is not page aligned")
 
-    . = __rpi_phys_binary_load_addr;
-
     .text :
     {
         KEEP(*(.text._start))
@@ -50,11 +51,23 @@ SECTIONS
         *(.text*)
     } :segment_code
 
+    .rodata : ALIGN(8) { *(.rodata*) } :segment_code
+
+    . = ALIGN(PAGE_SIZE);
+
+    .data : { *(.data*) } :segment_data 
+
     .bss (NOLOAD) : ALIGN(16)
     {
         __bss_start = .;
         *(.bss*);
         . = ALIGN(16);
         __bss_end_exclusive = .;
-    }
+    } :segment_data
+
+    . = ALIGN(PAGE_SIZE);
+
+    .got : { *(.got*) }
+
+    /DISCARD/ : { *(.comment*) }
 }

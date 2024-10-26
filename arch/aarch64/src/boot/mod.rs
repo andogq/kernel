@@ -1,4 +1,4 @@
-use core::arch::naked_asm;
+use core::{arch::naked_asm, cell::UnsafeCell};
 
 use aarch64_cpu::{asm, registers::*};
 
@@ -50,6 +50,13 @@ impl<Config: Aarch64Config> Aarch64<Config> {
 
         // Set the link address to return from the exception
         ELR_EL2.set(Config::KERNEL_MAIN as *const () as u64);
+
+        extern "C" {
+            static __boot_core_stack_end_exclusive: UnsafeCell<()>;
+        }
+
+        // Set up the EL1 stack to re-use the existing stack
+        SP_EL1.set(__boot_core_stack_end_exclusive.get() as u64);
 
         // Perform the exception return
         asm::eret()

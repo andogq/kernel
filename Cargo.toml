@@ -12,12 +12,15 @@ panic = "abort"
 [dependencies]
 aarch64.workspace = true
 rpi3.workspace = true
+pl011.workspace = true
 lib-kernel.workspace = true
 
 [workspace]
-members = ["arch/aarch64", "bsp/rpi3", "lib-kernel"]
+members = ["arch/aarch64", "bsp/rpi3", "device/pl011", "lib-kernel"]
 
 [workspace.dependencies]
 aarch64.path = "arch/aarch64"
 rpi3.path = "bsp/rpi3"
+pl011.path = "device/pl011"
 lib-kernel.path = "lib-kernel"
+tock-registers = "0.9.0"
