@@ -5,6 +5,8 @@ mod boot;
 
 use core::marker::PhantomData;
 
+use lib_kernel::Arch;
+
 /// Configuration that a BSP must provide if it relies on the Aarch64 architecture.
 pub trait Aarch64Config {
     /// ID of the boot core.
@@ -28,4 +30,9 @@ impl<C> Aarch64<C> {
             _config: PhantomData,
         }
     }
+}
+
+impl<C: Aarch64Config> Arch for Aarch64<C> {
+    const START: unsafe extern "C" fn() -> ! = Self::_start;
+    const START_RUST: unsafe extern "C" fn() -> ! = Self::_start_rust;
 }

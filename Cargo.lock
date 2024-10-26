@@ -7,6 +7,7 @@ name = "aarch64"
 version = "0.1.0"
 dependencies = [
  "aarch64-cpu",
+ "lib-kernel",
 ]
 
 [[package]]
@@ -23,14 +24,20 @@ name = "kernel"
 version = "0.1.0"
 dependencies = [
  "aarch64",
+ "lib-kernel",
  "rpi3",
 ]
+
+[[package]]
+name = "lib-kernel"
+version = "0.1.0"
 
 [[package]]
 name = "rpi3"
 version = "0.1.0"
 dependencies = [
  "aarch64",
+ "lib-kernel",
 ]
 
 [[package]]

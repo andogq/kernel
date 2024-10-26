@@ -17,7 +17,7 @@ impl<Config: Aarch64Config> Aarch64<Config> {
     /// item with the `_start` symbol, in order for the linker script to correctly find it.
     #[naked]
     #[no_mangle]
-    pub unsafe extern "C" fn _start() -> ! {
+    pub(crate) unsafe extern "C" fn _start() -> ! {
         naked_asm!(
             include_str!("boot.s"),
             CONST_CURRENTEL_EL2 = const 0x8,
@@ -32,7 +32,7 @@ impl<Config: Aarch64Config> Aarch64<Config> {
     ///
     /// Requires memory, including the stack, to be correctly configured.
     #[no_mangle]
-    pub unsafe extern "C" fn _start_rust() -> ! {
+    pub(crate) unsafe extern "C" fn _start_rust() -> ! {
         // D19-6632: Configure hypervisor controller to enable aarch64 in EL1
         HCR_EL2.write(HCR_EL2::RW::EL1IsAarch64);
 

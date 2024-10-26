@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 aarch64-cpu = "9.4.0"
+lib-kernel.workspace = true

@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 aarch64.workspace = true
+lib-kernel.workspace = true

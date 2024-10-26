@@ -12,10 +12,12 @@ panic = "abort"
 [dependencies]
 aarch64.workspace = true
 rpi3.workspace = true
+lib-kernel.workspace = true
 
 [workspace]
-members = ["arch/aarch64", "bsp/rpi3"]
+members = ["arch/aarch64", "bsp/rpi3", "lib-kernel"]
 
 [workspace.dependencies]
 aarch64.path = "arch/aarch64"
 rpi3.path = "bsp/rpi3"
+lib-kernel.path = "lib-kernel"
