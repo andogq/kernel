@@ -5,7 +5,7 @@ mod logging;
 
 use crate::logging::KernelLogger;
 use lib_kernel::{Arch as _, Bsp as BspTrait, RawFunction};
-use log::info;
+use log::{error, info};
 use rpi3::{Rpi3, Rpi3Config};
 use uom::{fmt::DisplayStyle, si::frequency::megahertz};
 
@@ -43,6 +43,14 @@ pub fn kernel_main() -> ! {
 }
 
 #[panic_handler]
-fn panic(_info: &core::panic::PanicInfo) -> ! {
+fn panic(info: &core::panic::PanicInfo) -> ! {
+    error!("==== Panic occurred! ====");
+
+    if let Some(location) = info.location() {
+        error!("Location: {}", location);
+    }
+
+    error!("{}", info.message());
+
     loop {}
 }
