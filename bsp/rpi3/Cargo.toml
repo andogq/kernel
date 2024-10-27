@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+spin.workspace = true
 aarch64.workspace = true
 lib-kernel.workspace = true
+pl011.workspace = true

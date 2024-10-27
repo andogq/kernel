@@ -14,6 +14,7 @@ aarch64.workspace = true
 rpi3.workspace = true
 pl011.workspace = true
 lib-kernel.workspace = true
+log.workspace = true
 
 [workspace]
 members = ["arch/aarch64", "bsp/rpi3", "device/pl011", "lib-kernel"]
@@ -22,5 +23,9 @@ members = ["arch/aarch64", "bsp/rpi3", "device/pl011", "lib-kernel"]
 aarch64.path = "arch/aarch64"
 rpi3.path = "bsp/rpi3"
 pl011.path = "device/pl011"
+
 lib-kernel.path = "lib-kernel"
+
 tock-registers = "0.9.0"
+spin = "0.9.8"
+log = "0.4.22"
