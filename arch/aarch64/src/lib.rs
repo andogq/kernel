@@ -2,6 +2,7 @@
 #![feature(naked_functions)]
 
 mod boot;
+mod time;
 
 use core::marker::PhantomData;
 

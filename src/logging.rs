@@ -1,5 +1,5 @@
-use crate::BSP;
-use lib_kernel::Bsp;
+use crate::{Bsp, BSP};
+use lib_kernel::Bsp as _;
 
 /// Helper struct to contain all logging-related functionality. Uses the
 /// [`lib_kernel::Bsp::with_debug_console`] method to provide logging to whatever device is most
@@ -27,7 +27,14 @@ impl log::Log for KernelLogger {
                 return Ok(());
             }
 
-            writeln!(w, "[{}]: {}", record.level(), record.args())
+            let timestamp = <Bsp as lib_kernel::Bsp>::Arch::uptime().as_secs_f64();
+
+            writeln!(
+                w,
+                "[{}] {timestamp:10.4}: {}",
+                record.level(),
+                record.args()
+            )
         }) else {
             return;
         };

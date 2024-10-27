@@ -15,6 +15,7 @@ rpi3.workspace = true
 pl011.workspace = true
 lib-kernel.workspace = true
 log.workspace = true
+uom.workspace = true
 
 [workspace]
 members = ["arch/aarch64", "bsp/rpi3", "device/pl011", "lib-kernel"]
@@ -29,3 +30,10 @@ lib-kernel.path = "lib-kernel"
 tock-registers = "0.9.0"
 spin = "0.9.8"
 log = "0.4.22"
+uom = { version = "0.36.0", features = [
+    "autoconvert",
+    "f32",
+    "f64",
+    "u64",
+    "si",
+], default-features = false }

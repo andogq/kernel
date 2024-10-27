@@ -7,6 +7,7 @@ use crate::logging::KernelLogger;
 use lib_kernel::{Arch as _, Bsp as BspTrait, RawFunction};
 use log::info;
 use rpi3::{Rpi3, Rpi3Config};
+use uom::{fmt::DisplayStyle, si::frequency::megahertz};
 
 /// Configuration object so that a pointer to `kernel_main` can be passed as a type parameter to
 /// the BSP.
@@ -31,6 +32,12 @@ pub fn kernel_main() -> ! {
     KernelLogger::init();
 
     info!("Kernel starting");
+
+    info!(
+        "Counter running at {}",
+        <Bsp as lib_kernel::Bsp>::Arch::frequency()
+            .into_format_args(megahertz, DisplayStyle::Abbreviation),
+    );
 
     loop {}
 }
