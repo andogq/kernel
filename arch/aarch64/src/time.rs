@@ -17,6 +17,7 @@ impl<C: Aarch64Config> Aarch64<C> {
 
     pub fn uptime() -> Duration {
         asm::barrier::isb(asm::barrier::SY);
+
         let count = CNTPCT_EL0.get();
 
         let count = Ratio::new::<ratio>(count as f64);
