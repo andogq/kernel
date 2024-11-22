@@ -19,6 +19,7 @@ uom.workspace = true
 
 [workspace]
 members = ["arch/aarch64", "bsp/rpi3", "device/pl011", "lib-kernel"]
+exclude = ["arch/aarch64/crates/bring-up"]
 
 [workspace.dependencies]
 aarch64.path = "arch/aarch64"
